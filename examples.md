@@ -1,5 +1,5 @@
 ```java
-public boolean sendPacket(Player player, CBPacket packet) {
+    public boolean sendPacket(Player player, CBPacket packet) {
         if (isRunningCheatBreaker(player)) {
             player.sendPluginMessage(this, CB_MESSAGE_CHANNEL, CBPacket.getPacketData(packet));
             Bukkit.getPluginManager().callEvent(new CBPacketSentEvent(player, packet));

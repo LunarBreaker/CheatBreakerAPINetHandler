@@ -16,7 +16,7 @@ If you suspect an issue you can submit one [here](https://github.com/LunarBreake
 1. Install maven `sudo apt-get install maven`
 2. Verify installation `mvn -v`
 3. Clone the repository `git clone git@github.com:LunarBreaker/CheatBreakerAPINetHandler.git`
-4. Navigate to the new folder `cd cheatBreakerapinethandler`
+4. Navigate to the new folder `cd cheatbreakerapinethandler`
 5. Import `pom.xml` into your IDE
 
 ## Compile a Build
