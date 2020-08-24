@@ -1,37 +1,34 @@
 package com.cheatbreaker.nethandler.client;
 
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.server.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.server.ICBNetHandlerServer;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketClientVoice extends CBPacket
-{
+import java.io.IOException;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketClientVoice extends CBPacket {
+
+    @Getter
     private byte[] data;
 
-    public CBPacketClientVoice() {
-    }
-
-    public CBPacketClientVoice(byte[] data) {
-        this.data = data;
+    @Override
+    public void write(ByteBufWrapper out) throws IOException {
+        this.writeBlob(out, this.data);
     }
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        this.writeBlob(b, this.data);
-    }
-
-    @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.data = this.readBlob(b);
+    public void read(ByteBufWrapper in) throws IOException {
+        this.data = this.readBlob(in);
     }
 
     @Override
     public void process(ICBNetHandler handler) {
         ((ICBNetHandlerServer)handler).handleVoice(this);
-        ((ICBNetHandlerClient)handler).handleVoice(this);
     }
 
-    public byte[] getData() {
-        return this.data;
-    }
 }

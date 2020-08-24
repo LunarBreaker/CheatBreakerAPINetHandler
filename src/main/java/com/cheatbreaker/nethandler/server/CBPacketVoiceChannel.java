@@ -1,48 +1,60 @@
 package com.cheatbreaker.nethandler.server;
 
-import java.io.*;
-import java.util.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
-import java.beans.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketVoiceChannel extends CBPacket
-{
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketVoiceChannel extends CBPacket {
+
+    @Getter
     private UUID uuid;
+    @Getter
     private String name;
+    @Getter
     private Map<UUID, String> players;
+    @Getter
     private Map<UUID, String> listening;
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeUUID(this.uuid);
-        b.writeString(this.name);
-        this.writeMap(b, this.players);
-        this.writeMap(b, this.listening);
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeUUID(this.uuid);
+        out.writeString(this.name);
+        this.writeMap(out, this.players);
+        this.writeMap(out, this.listening);
     }
 
     @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.uuid = b.readUUID();
-        this.name = b.readString();
-        this.players = this.readMap(b);
-        this.listening = this.readMap(b);
+    public void read(ByteBufWrapper in) throws IOException {
+        this.uuid = in.readUUID();
+        this.name = in.readString();
+        this.players = this.readMap(in);
+        this.listening = this.readMap(in);
     }
 
-    private void writeMap(ByteBufWrapper b, Map<UUID, String> players) {
-        b.writeVarInt(players.size());
-        for (Map.Entry<UUID, String> uuidStringEntry : players.entrySet()) {
-            b.writeUUID(uuidStringEntry.getKey());
-            b.writeString(uuidStringEntry.getValue());
-        }
+    private void writeMap(ByteBufWrapper out, Map<UUID, String> players) {
+        out.writeVarInt(players.size());
+        players.forEach((key, value) -> {
+            out.writeUUID(key);
+            out.writeString(value);
+        });
     }
 
-    private Map<UUID, String> readMap(ByteBufWrapper b) {
-        int size = b.readVarInt();
-        Map<UUID, String> players = new HashMap<UUID, String>();
+    private Map<UUID, String> readMap(ByteBufWrapper in) {
+        int size = in.readVarInt();
+        HashMap<UUID, String> players = new HashMap<>();
         for (int i = 0; i < size; ++i) {
-            UUID uuid = b.readUUID();
-            String name = b.readString();
+            UUID uuid = in.readUUID();
+            String name = in.readString();
             players.put(uuid, name);
         }
         return players;
@@ -53,30 +65,4 @@ public class CBPacketVoiceChannel extends CBPacket
         ((ICBNetHandlerClient)handler).handleVoiceChannels(this);
     }
 
-    @ConstructorProperties({ "uuid", "name", "players", "listening" })
-    public CBPacketVoiceChannel(UUID uuid, String name, Map<UUID, String> players, Map<UUID, String> listening) {
-        this.uuid = uuid;
-        this.name = name;
-        this.players = players;
-        this.listening = listening;
-    }
-
-    public CBPacketVoiceChannel() {
-    }
-
-    public UUID getUuid() {
-        return this.uuid;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Map<UUID, String> getPlayers() {
-        return this.players;
-    }
-
-    public Map<UUID, String> getListening() {
-        return this.listening;
-    }
 }

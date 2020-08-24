@@ -1,29 +1,30 @@
 package com.cheatbreaker.nethandler.client;
 
-import java.util.*;
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.server.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.server.ICBNetHandlerServer;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketVoiceChannelSwitch extends CBPacket
-{
+import java.io.IOException;
+import java.util.UUID;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketVoiceChannelSwitch extends CBPacket {
+
+    @Getter
     private UUID switchingTo;
 
-    public CBPacketVoiceChannelSwitch() {
-    }
-
-    public CBPacketVoiceChannelSwitch(UUID switchingTo) {
-        this.switchingTo = switchingTo;
+    @Override
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeUUID(this.switchingTo);
     }
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeUUID(this.switchingTo);
-    }
-
-    @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.switchingTo = b.readUUID();
+    public void read(ByteBufWrapper in) throws IOException {
+        this.switchingTo = in.readUUID();
     }
 
     @Override
@@ -31,7 +32,4 @@ public class CBPacketVoiceChannelSwitch extends CBPacket
         ((ICBNetHandlerServer)handler).handleVoiceChannelSwitch(this);
     }
 
-    public UUID getSwitchingTo() {
-        return this.switchingTo;
-    }
 }

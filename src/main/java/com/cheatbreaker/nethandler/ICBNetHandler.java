@@ -1,10 +1,12 @@
 package com.cheatbreaker.nethandler;
 
-import com.cheatbreaker.nethandler.shared.*;
+import com.cheatbreaker.nethandler.shared.CBPacketAddWaypoint;
+import com.cheatbreaker.nethandler.shared.CBPacketRemoveWaypoint;
 
-public interface ICBNetHandler
-{
-    void handleAddWaypoint(CBPacketWaypointAdd p0);
+public interface ICBNetHandler {
 
-    void handleRemoveWaypoint(CBPacketWaypointRemove p0);
+    void handleAddWaypoint(CBPacketAddWaypoint var1);
+
+    void handleRemoveWaypoint(CBPacketRemoveWaypoint var1);
+
 }

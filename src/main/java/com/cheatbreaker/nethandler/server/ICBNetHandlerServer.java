@@ -1,13 +1,16 @@
 package com.cheatbreaker.nethandler.server;
 
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.CBPacketClientVoice;
+import com.cheatbreaker.nethandler.client.CBPacketVoiceChannelSwitch;
+import com.cheatbreaker.nethandler.client.CBPacketVoiceMute;
 
-public interface ICBNetHandlerServer extends ICBNetHandler
-{
-    void handleVoice(CBPacketClientVoice p0);
+public interface ICBNetHandlerServer extends ICBNetHandler {
 
-    void handleVoiceChannelSwitch(CBPacketVoiceChannelSwitch p0);
+    void handleVoice(CBPacketClientVoice var1);
 
-    void handleVoiceMute(CBPacketVoiceMute p0);
+    void handleVoiceChannelSwitch(CBPacketVoiceChannelSwitch var1);
+
+    void handleVoiceMute(CBPacketVoiceMute var1);
+
 }

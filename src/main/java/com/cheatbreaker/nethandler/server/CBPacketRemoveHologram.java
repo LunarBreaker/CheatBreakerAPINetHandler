@@ -1,29 +1,30 @@
 package com.cheatbreaker.nethandler.server;
 
-import java.util.*;
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketRemoveHologram extends CBPacket
-{
+import java.io.IOException;
+import java.util.UUID;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketRemoveHologram extends CBPacket {
+
+    @Getter
     private UUID uuid;
 
-    public CBPacketRemoveHologram() {
-    }
-
-    public CBPacketRemoveHologram(UUID uuid) {
-        this.uuid = uuid;
+    @Override
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeUUID(this.uuid);
     }
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeUUID(this.uuid);
-    }
-
-    @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.uuid = b.readUUID();
+    public void read(ByteBufWrapper in) throws IOException {
+        this.uuid = in.readUUID();
     }
 
     @Override
@@ -31,7 +32,4 @@ public class CBPacketRemoveHologram extends CBPacket
         ((ICBNetHandlerClient)handler).handleRemoveHologram(this);
     }
 
-    public UUID getUuid() {
-        return this.uuid;
-    }
 }

@@ -1,37 +1,49 @@
 package com.cheatbreaker.nethandler.server;
 
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
-import java.beans.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketWorldBorderUpdate extends CBPacket
-{
+import java.io.IOException;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketWorldBorderUpdate extends CBPacket {
+
+    @Getter
     private String id;
+    @Getter
     private double minX;
+    @Getter
     private double minZ;
+    @Getter
     private double maxX;
+    @Getter
     private double maxZ;
+    @Getter
     private int durationTicks;
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeString(this.id);
-        b.buf().writeDouble(this.minX);
-        b.buf().writeDouble(this.minZ);
-        b.buf().writeDouble(this.maxX);
-        b.buf().writeDouble(this.maxZ);
-        b.buf().writeInt(this.durationTicks);
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeString(this.id);
+        out.buf().writeDouble(this.minX);
+        out.buf().writeDouble(this.minZ);
+        out.buf().writeDouble(this.maxX);
+        out.buf().writeDouble(this.maxZ);
+        out.buf().writeInt(this.durationTicks);
     }
 
     @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.id = b.readString();
-        this.minX = b.buf().readDouble();
-        this.minZ = b.buf().readDouble();
-        this.maxX = b.buf().readDouble();
-        this.maxZ = b.buf().readDouble();
-        this.durationTicks = b.buf().readInt();
+    public void read(ByteBufWrapper in) throws IOException {
+        this.id = in.readString();
+        this.minX = in.buf().readDouble();
+        this.minZ = in.buf().readDouble();
+        this.maxX = in.buf().readDouble();
+        this.maxZ = in.buf().readDouble();
+        this.durationTicks = in.buf().readInt();
     }
 
     @Override
@@ -39,40 +51,4 @@ public class CBPacketWorldBorderUpdate extends CBPacket
         ((ICBNetHandlerClient)handler).handleWorldBorderUpdate(this);
     }
 
-    public String getId() {
-        return this.id;
-    }
-
-    public double getMinX() {
-        return this.minX;
-    }
-
-    public double getMinZ() {
-        return this.minZ;
-    }
-
-    public double getMaxX() {
-        return this.maxX;
-    }
-
-    public double getMaxZ() {
-        return this.maxZ;
-    }
-
-    public int getDurationTicks() {
-        return this.durationTicks;
-    }
-
-    public CBPacketWorldBorderUpdate() {
-    }
-
-    @ConstructorProperties({ "id", "minX", "minZ", "maxX", "maxZ", "durationTicks" })
-    public CBPacketWorldBorderUpdate(String id, double minX, double minZ, double maxX, double maxZ, int durationTicks) {
-        this.id = id;
-        this.minX = minX;
-        this.minZ = minZ;
-        this.maxX = maxX;
-        this.maxZ = maxZ;
-        this.durationTicks = durationTicks;
-    }
 }

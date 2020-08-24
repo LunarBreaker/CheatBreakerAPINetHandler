@@ -1,17 +1,29 @@
 package com.cheatbreaker.nethandler.server;
 
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
-import java.beans.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketTitle extends CBPacket
-{
+import java.io.IOException;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketTitle extends CBPacket {
+
+    @Getter
     private String type;
+    @Getter
     private String message;
+    @Getter
     private float scale;
+    @Getter
     private long displayTimeMs;
+    @Getter
     private long fadeInTimeMs;
+    @Getter
     private long fadeOutTimeMs;
 
     public CBPacketTitle(String type, String message, long displayTimeMs, long fadeInTimeMs, long fadeOutTimeMs) {
@@ -19,23 +31,23 @@ public class CBPacketTitle extends CBPacket
     }
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeString(this.type);
-        b.writeString(this.message);
-        b.buf().writeFloat(this.scale);
-        b.buf().writeLong(this.displayTimeMs);
-        b.buf().writeLong(this.fadeInTimeMs);
-        b.buf().writeLong(this.fadeOutTimeMs);
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeString(this.type);
+        out.writeString(this.message);
+        out.buf().writeFloat(this.scale);
+        out.buf().writeLong(this.displayTimeMs);
+        out.buf().writeLong(this.fadeInTimeMs);
+        out.buf().writeLong(this.fadeOutTimeMs);
     }
 
     @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.type = b.readString();
-        this.message = b.readString();
-        this.scale = b.buf().readFloat();
-        this.displayTimeMs = b.buf().readLong();
-        this.fadeInTimeMs = b.buf().readLong();
-        this.fadeOutTimeMs = b.buf().readLong();
+    public void read(ByteBufWrapper in) throws IOException {
+        this.type = in.readString();
+        this.message = in.readString();
+        this.scale = in.buf().readFloat();
+        this.displayTimeMs = in.buf().readLong();
+        this.fadeInTimeMs = in.buf().readLong();
+        this.fadeOutTimeMs = in.buf().readLong();
     }
 
     @Override
@@ -43,40 +55,4 @@ public class CBPacketTitle extends CBPacket
         ((ICBNetHandlerClient)handler).handleTitle(this);
     }
 
-    public String getType() {
-        return this.type;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public float getScale() {
-        return this.scale;
-    }
-
-    public long getDisplayTimeMs() {
-        return this.displayTimeMs;
-    }
-
-    public long getFadeInTimeMs() {
-        return this.fadeInTimeMs;
-    }
-
-    public long getFadeOutTimeMs() {
-        return this.fadeOutTimeMs;
-    }
-
-    @ConstructorProperties({ "type", "message", "scale", "displayTimeMs", "fadeInTimeMs", "fadeOutTimeMs" })
-    public CBPacketTitle(String type, String message, float scale, long displayTimeMs, long fadeInTimeMs, long fadeOutTimeMs) {
-        this.type = type;
-        this.message = message;
-        this.scale = scale;
-        this.displayTimeMs = displayTimeMs;
-        this.fadeInTimeMs = fadeInTimeMs;
-        this.fadeOutTimeMs = fadeOutTimeMs;
-    }
-
-    public CBPacketTitle() {
-    }
 }

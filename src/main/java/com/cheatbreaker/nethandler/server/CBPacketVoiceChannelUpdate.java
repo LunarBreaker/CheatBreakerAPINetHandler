@@ -1,32 +1,42 @@
 package com.cheatbreaker.nethandler.server;
 
-import java.util.*;
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
-import java.beans.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketVoiceChannelUpdate extends CBPacket
-{
+import java.io.IOException;
+import java.util.UUID;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketVoiceChannelUpdate extends CBPacket {
+
+    @Getter
     public int status;
+    @Getter
     private UUID channelUuid;
+    @Getter
     private UUID uuid;
+    @Getter
     private String name;
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeVarInt(this.status);
-        b.writeUUID(this.channelUuid);
-        b.writeUUID(this.uuid);
-        b.writeString(this.name);
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeVarInt(this.status);
+        out.writeUUID(this.channelUuid);
+        out.writeUUID(this.uuid);
+        out.writeString(this.name);
     }
 
     @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.status = b.readVarInt();
-        this.channelUuid = b.readUUID();
-        this.uuid = b.readUUID();
-        this.name = b.readString();
+    public void read(ByteBufWrapper in) throws IOException {
+        this.status = in.readVarInt();
+        this.channelUuid = in.readUUID();
+        this.uuid = in.readUUID();
+        this.name = in.readString();
     }
 
     @Override
@@ -34,30 +44,4 @@ public class CBPacketVoiceChannelUpdate extends CBPacket
         ((ICBNetHandlerClient)handler).handleVoiceChannelUpdate(this);
     }
 
-    @ConstructorProperties({ "status", "channelUuid", "uuid", "name" })
-    public CBPacketVoiceChannelUpdate(int status, UUID channelUuid, UUID uuid, String name) {
-        this.status = status;
-        this.channelUuid = channelUuid;
-        this.uuid = uuid;
-        this.name = name;
-    }
-
-    public CBPacketVoiceChannelUpdate() {
-    }
-
-    public int getStatus() {
-        return this.status;
-    }
-
-    public UUID getChannelUuid() {
-        return this.channelUuid;
-    }
-
-    public UUID getUuid() {
-        return this.uuid;
-    }
-
-    public String getName() {
-        return this.name;
-    }
 }

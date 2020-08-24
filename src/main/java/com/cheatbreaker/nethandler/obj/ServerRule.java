@@ -1,36 +1,31 @@
 package com.cheatbreaker.nethandler.obj;
 
-public enum ServerRule
-{
+import lombok.Getter;
+
+public enum ServerRule {
+
     VOICE_ENABLED("voiceEnabled", Boolean.class),
     MINIMAP_STATUS("minimapStatus", String.class),
     SERVER_HANDLES_WAYPOINTS("serverHandlesWaypoints", Boolean.class),
     COMPETITIVE_GAMEMODE("competitiveGame", Boolean.class);
 
-    String rule;
-    Class value;
+    @Getter
+    private final String rule;
+    @Getter
+    private final Class value;
 
-    private ServerRule(String rule, Class clazz) {
-        this.rule = rule;
-        this.value = clazz;
-    }
-
-    public static ServerRule getRule(String s) {
+    public static ServerRule getRule(String name) {
         ServerRule rule = null;
-        ServerRule[] var2 = values();
-        for (ServerRule sr : var2) {
-            if (sr.getRule().equals(s)) {
-                rule = sr;
-            }
+        for (ServerRule sr : ServerRule.values()) {
+            if (!sr.getRule().equals(name)) continue;
+            rule = sr;
         }
         return rule;
     }
 
-    public String getRule() {
-        return this.rule;
+    ServerRule(String rule, Class value) {
+        this.rule = rule;
+        this.value = value;
     }
 
-    public Class getValue() {
-        return this.value;
-    }
 }

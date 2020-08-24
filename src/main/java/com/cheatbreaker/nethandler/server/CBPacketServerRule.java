@@ -1,16 +1,25 @@
 package com.cheatbreaker.nethandler.server;
 
-import com.cheatbreaker.nethandler.obj.*;
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import com.cheatbreaker.nethandler.obj.ServerRule;
+import lombok.Getter;
 
-public class CBPacketServerRule extends CBPacket
-{
+import java.io.IOException;
+
+public class CBPacketServerRule extends CBPacket {
+
+    @Getter
     private ServerRule rule;
+    @Getter
     private int intValue;
+    @Getter
     private float floatValue;
+    @Getter
     private boolean booleanValue;
+    @Getter
     private String stringValue;
 
     public CBPacketServerRule() {
@@ -38,31 +47,26 @@ public class CBPacketServerRule extends CBPacket
     }
 
     private CBPacketServerRule(ServerRule rule) {
-        this.stringValue = "";
         this.rule = rule;
+        this.stringValue = "";
     }
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeString(this.rule.getRule());
-        b.buf().writeBoolean(this.booleanValue);
-        b.buf().writeInt(this.intValue);
-        b.buf().writeFloat(this.floatValue);
-        b.writeString(this.stringValue);
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeString(this.rule.getRule());
+        out.buf().writeBoolean(this.booleanValue);
+        out.buf().writeInt(this.intValue);
+        out.buf().writeFloat(this.floatValue);
+        out.writeString(this.stringValue);
     }
 
     @Override
-    protected byte[] readBlob(ByteBufWrapper b) {
-        return super.readBlob(b);
-    }
-
-    @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.rule = ServerRule.getRule(b.readString());
-        this.booleanValue = b.buf().readBoolean();
-        this.intValue = b.buf().readInt();
-        this.floatValue = b.buf().readFloat();
-        this.stringValue = b.readString();
+    public void read(ByteBufWrapper in) throws IOException {
+        this.rule = ServerRule.getRule(in.readString());
+        this.booleanValue = in.buf().readBoolean();
+        this.intValue = in.buf().readInt();
+        this.floatValue = in.buf().readFloat();
+        this.stringValue = in.readString();
     }
 
     @Override
@@ -70,23 +74,4 @@ public class CBPacketServerRule extends CBPacket
         ((ICBNetHandlerClient)handler).handleServerRule(this);
     }
 
-    public ServerRule getRule() {
-        return this.rule;
-    }
-
-    public int getIntValue() {
-        return this.intValue;
-    }
-
-    public float getFloatValue() {
-        return this.floatValue;
-    }
-
-    public boolean isBooleanValue() {
-        return this.booleanValue;
-    }
-
-    public String getStringValue() {
-        return this.stringValue;
-    }
 }

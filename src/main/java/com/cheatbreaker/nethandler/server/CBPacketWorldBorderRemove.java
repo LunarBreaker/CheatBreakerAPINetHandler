@@ -1,22 +1,29 @@
 package com.cheatbreaker.nethandler.server;
 
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
-import java.beans.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketWorldBorderRemove extends CBPacket
-{
+import java.io.IOException;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketWorldBorderRemove extends CBPacket {
+
+    @Getter
     private String id;
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeString(this.id);
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeString(this.id);
     }
 
     @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.id = b.readString();
+    public void read(ByteBufWrapper in) throws IOException {
+        this.id = in.readString();
     }
 
     @Override
@@ -24,15 +31,4 @@ public class CBPacketWorldBorderRemove extends CBPacket
         ((ICBNetHandlerClient)handler).handleWorldBorderRemove(this);
     }
 
-    @ConstructorProperties({ "id" })
-    public CBPacketWorldBorderRemove(String id) {
-        this.id = id;
-    }
-
-    public CBPacketWorldBorderRemove() {
-    }
-
-    public String getId() {
-        return this.id;
-    }
 }

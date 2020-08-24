@@ -1,46 +1,61 @@
 package com.cheatbreaker.nethandler.server;
 
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
-import java.beans.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketWorldBorder extends CBPacket
-{
+import java.io.IOException;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketWorldBorder extends CBPacket {
+
+    @Getter
     private String id;
+    @Getter
     private String world;
+    @Getter
     private boolean cancelsExit;
+    @Getter
     private boolean canShrinkExpand;
+    @Getter
     private int color;
+    @Getter
     private double minX;
+    @Getter
     private double minZ;
+    @Getter
     private double maxX;
+    @Getter
     private double maxZ;
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeOptional(this.id, b::writeString);
-        b.writeString(this.world);
-        b.buf().writeBoolean(this.cancelsExit);
-        b.buf().writeBoolean(this.canShrinkExpand);
-        b.buf().writeInt(this.color);
-        b.buf().writeDouble(this.minX);
-        b.buf().writeDouble(this.minZ);
-        b.buf().writeDouble(this.maxX);
-        b.buf().writeDouble(this.maxZ);
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeOptional(this.id, out::writeString);
+        out.writeString(this.world);
+        out.buf().writeBoolean(this.cancelsExit);
+        out.buf().writeBoolean(this.canShrinkExpand);
+        out.buf().writeInt(this.color);
+        out.buf().writeDouble(this.minX);
+        out.buf().writeDouble(this.minZ);
+        out.buf().writeDouble(this.maxX);
+        out.buf().writeDouble(this.maxZ);
     }
 
     @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.id = b.readOptional(b::readString);
-        this.world = b.readString();
-        this.cancelsExit = b.buf().readBoolean();
-        this.canShrinkExpand = b.buf().readBoolean();
-        this.color = b.buf().readInt();
-        this.minX = b.buf().readDouble();
-        this.minZ = b.buf().readDouble();
-        this.maxX = b.buf().readDouble();
-        this.maxZ = b.buf().readDouble();
+    public void read(ByteBufWrapper in) throws IOException {
+        this.id = in.readOptional(in::readString);
+        this.world = in.readString();
+        this.cancelsExit = in.buf().readBoolean();
+        this.canShrinkExpand = in.buf().readBoolean();
+        this.color = in.buf().readInt();
+        this.minX = in.buf().readDouble();
+        this.minZ = in.buf().readDouble();
+        this.maxX = in.buf().readDouble();
+        this.maxZ = in.buf().readDouble();
     }
 
     @Override
@@ -48,57 +63,4 @@ public class CBPacketWorldBorder extends CBPacket
         ((ICBNetHandlerClient)handler).handleWorldBorder(this);
     }
 
-    public String getId() {
-        return this.id;
-    }
-
-    public String getWorld() {
-        return this.world;
-    }
-
-    public boolean isCancelsExit() {
-        return this.cancelsExit;
-    }
-
-    public boolean isCanShrinkExpand() {
-        return this.canShrinkExpand;
-    }
-
-    public int getColor() {
-        return this.color;
-    }
-
-    public double getMinX() {
-        return this.minX;
-    }
-
-    public double getMinZ() {
-        return this.minZ;
-    }
-
-    public double getMaxX() {
-        return this.maxX;
-    }
-
-    public double getMaxZ() {
-        return this.maxZ;
-    }
-
-    public CBPacketWorldBorder() {
-        this.color = -13421569;
-    }
-
-    @ConstructorProperties({ "id", "world", "cancelsExit", "canShrinkExpand", "color", "minX", "minZ", "maxX", "maxZ" })
-    public CBPacketWorldBorder(String id, String world, boolean cancelsExit, boolean canShrinkExpand, int color, double minX, double minZ, double maxX, double maxZ) {
-        this.color = -13421569;
-        this.id = id;
-        this.world = world;
-        this.cancelsExit = cancelsExit;
-        this.canShrinkExpand = canShrinkExpand;
-        this.color = color;
-        this.minX = minX;
-        this.minZ = minZ;
-        this.maxX = maxX;
-        this.maxZ = maxZ;
-    }
 }

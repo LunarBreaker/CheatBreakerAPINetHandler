@@ -9,26 +9,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @AllArgsConstructor @NoArgsConstructor
-public class CBPacketServerUpdate extends CBPacket {
+public class CBPacketDeleteVoiceChannel extends CBPacket {
 
     @Getter
-    private String server;
+    private UUID uuid;
 
     @Override
     public void write(ByteBufWrapper out) throws IOException {
-        out.writeString(this.server);
+        out.writeUUID(this.uuid);
     }
 
     @Override
     public void read(ByteBufWrapper in) throws IOException {
-        this.server = in.readString();
+        this.uuid = in.readUUID();
     }
 
     @Override
     public void process(ICBNetHandler handler) {
-        ((ICBNetHandlerClient)handler).handleServerUpdate(this);
+        ((ICBNetHandlerClient)handler).handleDeleteVoiceChannel(this);
     }
 
 }

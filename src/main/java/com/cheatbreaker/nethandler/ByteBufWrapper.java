@@ -1,14 +1,15 @@
 package com.cheatbreaker.nethandler;
 
-import io.netty.buffer.*;
-import java.util.function.*;
-import com.google.common.base.*;
-import java.util.*;
+import com.google.common.base.Charsets;
+import io.netty.buffer.ByteBuf;
+
+import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class ByteBufWrapper
-{
-    private ByteBuf buf;
+public class ByteBufWrapper {
+
+    private final ByteBuf buf;
 
     public ByteBufWrapper(ByteBuf buf) {
         this.buf = buf;

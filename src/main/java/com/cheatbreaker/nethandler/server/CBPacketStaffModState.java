@@ -1,25 +1,33 @@
 package com.cheatbreaker.nethandler.server;
 
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
-import java.beans.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketStaffModState extends CBPacket
-{
+import java.io.IOException;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketStaffModState extends CBPacket {
+
+    @Getter
     private String mod;
+    @Getter
     private boolean state;
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeString(this.mod);
-        b.buf().writeBoolean(this.state);
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeString(this.mod);
+        out.buf().writeBoolean(this.state);
     }
 
     @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.mod = b.readString();
-        this.state = b.buf().readBoolean();
+    public void read(ByteBufWrapper in) throws IOException {
+        this.mod = in.readString();
+        this.state = in.buf().readBoolean();
     }
 
     @Override
@@ -27,20 +35,4 @@ public class CBPacketStaffModState extends CBPacket
         ((ICBNetHandlerClient)handler).handleStaffModState(this);
     }
 
-    public String getMod() {
-        return this.mod;
-    }
-
-    public boolean isState() {
-        return this.state;
-    }
-
-    @ConstructorProperties({ "mod", "state" })
-    public CBPacketStaffModState(String mod, boolean state) {
-        this.mod = mod;
-        this.state = state;
-    }
-
-    public CBPacketStaffModState() {
-    }
 }

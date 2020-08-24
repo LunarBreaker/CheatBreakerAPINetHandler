@@ -9,26 +9,38 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor @NoArgsConstructor
-public class CBPacketServerUpdate extends CBPacket {
+public class CBPacketUpdateHologram extends CBPacket {
 
     @Getter
-    private String server;
+    private UUID uuid;
+    @Getter
+    private List<String> lines;
 
     @Override
     public void write(ByteBufWrapper out) throws IOException {
-        out.writeString(this.server);
+        out.writeUUID(this.uuid);
+        out.writeVarInt(this.lines.size());
+        this.lines.forEach(out::writeString);
     }
 
     @Override
     public void read(ByteBufWrapper in) throws IOException {
-        this.server = in.readString();
+        this.uuid = in.readUUID();
+        int linesSize = in.readVarInt();
+        this.lines = new ArrayList<>();
+        for (int i = 0; i < linesSize; ++i) {
+            this.lines.add(in.readString());
+        }
     }
 
     @Override
     public void process(ICBNetHandler handler) {
-        ((ICBNetHandlerClient)handler).handleServerUpdate(this);
+        ((ICBNetHandlerClient)handler).handleUpdateHologram(this);
     }
 
 }

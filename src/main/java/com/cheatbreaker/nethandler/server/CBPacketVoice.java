@@ -1,26 +1,34 @@
 package com.cheatbreaker.nethandler.server;
 
-import java.util.*;
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
-import java.beans.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketVoice extends CBPacket
-{
+import java.io.IOException;
+import java.util.UUID;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketVoice extends CBPacket {
+
+    @Getter
     private UUID uuid;
+    @Getter
     private byte[] data;
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeUUID(this.uuid);
-        this.writeBlob(b, this.data);
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeUUID(this.uuid);
+        this.writeBlob(out, this.data);
     }
 
     @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.uuid = b.readUUID();
-        this.data = this.readBlob(b);
+    public void read(ByteBufWrapper in) throws IOException {
+        this.uuid = in.readUUID();
+        this.data = this.readBlob(in);
     }
 
     @Override
@@ -28,20 +36,4 @@ public class CBPacketVoice extends CBPacket
         ((ICBNetHandlerClient)handler).handleVoice(this);
     }
 
-    @ConstructorProperties({ "uuid", "data" })
-    public CBPacketVoice(UUID uuid, byte[] data) {
-        this.uuid = uuid;
-        this.data = data;
-    }
-
-    public CBPacketVoice() {
-    }
-
-    public UUID getUuid() {
-        return this.uuid;
-    }
-
-    public byte[] getData() {
-        return this.data;
-    }
 }

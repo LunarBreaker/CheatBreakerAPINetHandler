@@ -1,36 +1,37 @@
 package com.cheatbreaker.nethandler.server;
 
-import java.io.*;
-import com.cheatbreaker.nethandler.*;
-import com.cheatbreaker.nethandler.client.*;
+import com.cheatbreaker.nethandler.ByteBufWrapper;
+import com.cheatbreaker.nethandler.CBPacket;
+import com.cheatbreaker.nethandler.ICBNetHandler;
+import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CBPacketNotification extends CBPacket
-{
+import java.io.IOException;
+
+@AllArgsConstructor @NoArgsConstructor
+public class CBPacketNotification extends CBPacket {
+
+    @Getter
     private String message;
+    @Getter
     private long durationMs;
+    @Getter
     private String level;
 
-    public CBPacketNotification() {
-    }
-
-    public CBPacketNotification(String message, long durationMs, String level) {
-        this.message = message;
-        this.durationMs = durationMs;
-        this.level = level;
+    @Override
+    public void write(ByteBufWrapper out) throws IOException {
+        out.writeString(this.message);
+        out.buf().writeLong(this.durationMs);
+        out.writeString(this.level);
     }
 
     @Override
-    public void write(ByteBufWrapper b) throws IOException {
-        b.writeString(this.message);
-        b.buf().writeLong(this.durationMs);
-        b.writeString(this.level);
-    }
-
-    @Override
-    public void read(ByteBufWrapper b) throws IOException {
-        this.message = b.readString();
-        this.durationMs = b.buf().readLong();
-        this.level = b.readString();
+    public void read(ByteBufWrapper in) throws IOException {
+        this.message = in.readString();
+        this.durationMs = in.buf().readLong();
+        this.level = in.readString();
     }
 
     @Override
@@ -38,15 +39,4 @@ public class CBPacketNotification extends CBPacket
         ((ICBNetHandlerClient)handler).handleNotification(this);
     }
 
-    public String getMessage() {
-        return this.message;
-    }
-
-    public long getDurationMs() {
-        return this.durationMs;
-    }
-
-    public String getLevel() {
-        return this.level;
-    }
 }

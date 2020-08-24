@@ -1,9 +1,8 @@
-package com.cheatbreaker.nethandler.server;
+package com.cheatbreaker.nethandler.shared;
 
 import com.cheatbreaker.nethandler.ByteBufWrapper;
 import com.cheatbreaker.nethandler.CBPacket;
 import com.cheatbreaker.nethandler.ICBNetHandler;
-import com.cheatbreaker.nethandler.client.ICBNetHandlerClient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,24 +10,28 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 
 @AllArgsConstructor @NoArgsConstructor
-public class CBPacketUpdateWorld extends CBPacket {
+public class CBPacketRemoveWaypoint extends CBPacket {
 
+    @Getter
+    private String name;
     @Getter
     private String world;
 
     @Override
-    public void write(ByteBufWrapper out) throws IOException {
-        out.writeString(this.world);
+    public void write(ByteBufWrapper b) throws IOException {
+        b.writeString(this.name);
+        b.writeString(this.world);
     }
 
     @Override
-    public void read(ByteBufWrapper in) throws IOException {
-        this.world = in.readString();
+    public void read(ByteBufWrapper b) throws IOException {
+        this.name = b.readString();
+        this.world = b.readString();
     }
 
     @Override
     public void process(ICBNetHandler handler) {
-        ((ICBNetHandlerClient)handler).handleUpdateWorld(this);
+        handler.handleRemoveWaypoint(this);
     }
 
 }
