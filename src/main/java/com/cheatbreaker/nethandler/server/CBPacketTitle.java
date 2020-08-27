@@ -10,20 +10,14 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketTitle extends CBPacket {
 
-    @Getter
     private String type;
-    @Getter
     private String message;
-    @Getter
     private float scale;
-    @Getter
     private long displayTimeMs;
-    @Getter
     private long fadeInTimeMs;
-    @Getter
     private long fadeOutTimeMs;
 
     public CBPacketTitle(String type, String message, long displayTimeMs, long fadeInTimeMs, long fadeOutTimeMs) {

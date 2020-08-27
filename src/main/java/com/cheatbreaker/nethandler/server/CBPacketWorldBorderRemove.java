@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketWorldBorderRemove extends CBPacket {
 
-    @Getter
     private String id;
 
     @Override

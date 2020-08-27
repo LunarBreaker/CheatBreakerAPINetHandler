@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketClientVoice extends CBPacket {
 
-    @Getter
     private byte[] data;
 
     @Override

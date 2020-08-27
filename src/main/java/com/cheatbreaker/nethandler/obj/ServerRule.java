@@ -2,6 +2,7 @@ package com.cheatbreaker.nethandler.obj;
 
 import lombok.Getter;
 
+@Getter
 public enum ServerRule {
 
     VOICE_ENABLED("voiceEnabled", Boolean.class),
@@ -9,9 +10,7 @@ public enum ServerRule {
     SERVER_HANDLES_WAYPOINTS("serverHandlesWaypoints", Boolean.class),
     COMPETITIVE_GAMEMODE("competitiveGame", Boolean.class);
 
-    @Getter
     private final String rule;
-    @Getter
     private final Class value;
 
     public static ServerRule getRule(String name) {

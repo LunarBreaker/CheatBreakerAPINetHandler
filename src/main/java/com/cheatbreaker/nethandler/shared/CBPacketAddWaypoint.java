@@ -9,24 +9,16 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketAddWaypoint extends CBPacket {
 
-    @Getter
     private String name;
-    @Getter
     private String world;
-    @Getter
     private int color;
-    @Getter
     private int x;
-    @Getter
     private int y;
-    @Getter
     private int z;
-    @Getter
     private boolean forced;
-    @Getter
     private boolean visible;
 
     @Override

@@ -11,16 +11,12 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 import java.util.UUID;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketVoiceChannelUpdate extends CBPacket {
 
-    @Getter
     public int status;
-    @Getter
     private UUID channelUuid;
-    @Getter
     private UUID uuid;
-    @Getter
     private String name;
 
     @Override

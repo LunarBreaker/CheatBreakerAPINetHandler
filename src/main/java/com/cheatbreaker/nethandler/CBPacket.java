@@ -16,8 +16,8 @@ import java.io.IOException;
 public abstract class CBPacket {
 
     private static final BiMap<Class, Integer> REGISTRY = HashBiMap.create();
-    @Getter
-    private Object attachment;
+
+    @Getter private Object attachment;
 
     public abstract void write(ByteBufWrapper var1) throws IOException;
 

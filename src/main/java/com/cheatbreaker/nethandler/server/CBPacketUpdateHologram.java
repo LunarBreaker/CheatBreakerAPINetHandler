@@ -13,12 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketUpdateHologram extends CBPacket {
 
-    @Getter
     private UUID uuid;
-    @Getter
     private List<String> lines;
 
     @Override

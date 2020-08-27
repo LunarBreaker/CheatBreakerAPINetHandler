@@ -10,20 +10,14 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketWorldBorderUpdate extends CBPacket {
 
-    @Getter
     private String id;
-    @Getter
     private double minX;
-    @Getter
     private double minZ;
-    @Getter
     private double maxX;
-    @Getter
     private double maxZ;
-    @Getter
     private int durationTicks;
 
     @Override

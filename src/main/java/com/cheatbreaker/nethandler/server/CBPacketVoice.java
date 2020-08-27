@@ -11,12 +11,10 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 import java.util.UUID;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketVoice extends CBPacket {
 
-    @Getter
     private UUID uuid;
-    @Getter
     private byte[] data;
 
     @Override

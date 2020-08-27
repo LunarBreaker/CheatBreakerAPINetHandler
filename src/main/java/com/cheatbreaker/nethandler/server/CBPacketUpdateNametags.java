@@ -15,10 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketUpdateNametags extends CBPacket {
 
-    @Getter
     private Map<UUID, List<String>> playersMap;
 
     @Override

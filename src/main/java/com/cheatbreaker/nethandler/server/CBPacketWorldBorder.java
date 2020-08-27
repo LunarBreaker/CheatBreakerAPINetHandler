@@ -10,26 +10,17 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketWorldBorder extends CBPacket {
 
-    @Getter
     private String id;
-    @Getter
     private String world;
-    @Getter
     private boolean cancelsExit;
-    @Getter
     private boolean canShrinkExpand;
-    @Getter
     private int color;
-    @Getter
     private double minX;
-    @Getter
     private double minZ;
-    @Getter
     private double maxX;
-    @Getter
     private double maxZ;
 
     @Override

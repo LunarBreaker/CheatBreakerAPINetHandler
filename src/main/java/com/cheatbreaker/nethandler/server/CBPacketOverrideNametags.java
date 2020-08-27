@@ -13,12 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketOverrideNametags extends CBPacket {
 
-    @Getter
     private UUID player;
-    @Getter
     private List<String> tags;
 
     @Override

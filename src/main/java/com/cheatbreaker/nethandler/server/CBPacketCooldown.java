@@ -10,14 +10,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketCooldown extends CBPacket {
 
-    @Getter
     private String message;
-    @Getter
     private long durationMs;
-    @Getter
     private int iconId;
 
     @Override

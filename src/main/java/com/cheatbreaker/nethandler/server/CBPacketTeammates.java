@@ -13,14 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor @Getter
 public class CBPacketTeammates extends CBPacket {
 
-    @Getter
     private UUID leader;
-    @Getter
     private long lastMs;
-    @Getter
     private Map<UUID, Map<String, Double>> players;
 
     @Override
